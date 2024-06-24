@@ -1,0 +1,174 @@
+@charset "UTF-8";
+/* Variables */
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+a:hover {
+  color: #388E3C;
+}
+
+/* Header Styles */
+header {
+  background-color: #4CAF50;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+header nav a {
+  margin-left: 20px;
+  color: white;
+  font-weight: bold;
+}
+header nav button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Carousel Styles */
+.carousel {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 400px;
+}
+.carousel .carousel-item {
+  flex: 1 0 100%;
+}
+.carousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+/* Map Styles */
+#map {
+  width: 100%;
+  height: 450px;
+}
+#map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Description Styles */
+#description {
+  padding: 20px;
+  background-color: white;
+}
+#description h2 {
+  margin-top: 0;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+footer .social-links a {
+  margin: 0 10px;
+  color: white;
+}
+
+#reservation {
+  padding: 20px;
+  background-color: white;
+  margin-top: 20px;
+}
+#reservation form {
+  display: flex;
+  flex-direction: column;
+}
+#reservation form label {
+  margin-top: 10px;
+}
+#reservation form input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+#reservation form button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#reservation form button:hover {
+  background-color: #0062cc;
+}
+#reservation .calendar-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+#reservation .calendar-navigation button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+#reservation .calendar-navigation button:hover {
+  background-color: #0062cc;
+}
+#reservation .calendar-navigation #current-month {
+  margin: 0 20px;
+  font-weight: bold;
+}
+#reservation .calendar {
+  margin-top: 20px;
+}
+#reservation .calendar table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+#reservation .calendar table th, #reservation .calendar table td {
+  border: 1px solid #ccc;
+  padding: 0;
+  text-align: center;
+  width: 35.7142857143px;
+  height: 35.7142857143px;
+  cursor: pointer;
+}
+#reservation .calendar table th {
+  background-color: #007bff;
+  color: white;
+}
+#reservation .calendar table td.available {
+  background-color: #f9f9f9;
+}
+#reservation .calendar table td.selected {
+  background-color: #b3e5fc;
+}
+#reservation .calendar table td.booked {
+  background-color: #FFCDD2; /* Couleur pour les dates réservées */
+  cursor: not-allowed;
+}/*# sourceMappingURL=style.css.map */

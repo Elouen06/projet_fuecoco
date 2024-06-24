@@ -1,0 +1,12 @@
+{
+    "name": "loulou/projet_fuecoco",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/",
+            "Controllers\\": "App/Controllers",
+            "Models\\": "App/Models",
+            "Views\\": "App/Views"
+        }
+    },
+    "require": {}
+}

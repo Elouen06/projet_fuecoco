@@ -1,0 +1,199 @@
+/* Variables */
+$primary-color: #4CAF50;
+$secondary-color: #f2f2f2;
+$text-color: #333;
+$link-color: #4CAF50;
+$link-hover-color: #388E3C;
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: $secondary-color;
+    color: $text-color;
+}
+
+a {
+    color: $link-color;
+    text-decoration: none;
+    &:hover {
+        color: $link-hover-color;
+    }
+}
+
+/* Header Styles */
+header {
+    background-color: $primary-color;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    nav {
+        a {
+            margin-left: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: $primary-color;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    }
+}
+
+/* Carousel Styles */
+.carousel {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 400px;
+    .carousel-item {
+        flex: 1 0 100%;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+/* Map Styles */
+#map {
+    width: 100%;
+    height: 450px;
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+}
+
+/* Description Styles */
+#description {
+    padding: 20px;
+    background-color: white;
+    h2 {
+        margin-top: 0;
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: $primary-color;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    
+    .social-links {
+        a {
+            margin: 0 10px;
+            color: white;
+        }
+    }
+}
+#reservation {
+    padding: 20px;
+    background-color: white;
+    margin-top: 20px;
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            &:hover {
+                background-color: darken(#007bff, 10%);
+            }
+        }
+    }
+
+    .calendar-navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: darken(#007bff, 10%);
+            }
+        }
+
+        #current-month {
+            margin: 0 20px;
+            font-weight: bold;
+        }
+    }
+
+    .calendar {
+        margin-top: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+
+            th, td {
+                border: 1px solid #ccc;
+                padding: 0;
+                text-align: center;
+                width: calc(250px / 7);
+                height: calc(250px / 7);
+                cursor: pointer;
+            }
+
+            th {
+                background-color: #007bff;
+                color: white;
+            }
+
+            td {
+                &.available {
+                    background-color: #f9f9f9;
+                }
+                &.selected {
+                    background-color: #b3e5fc;
+                }
+                &.booked {
+                    background-color: #FFCDD2; /* Couleur pour les dates réservées */
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}

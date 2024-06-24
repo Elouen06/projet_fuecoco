@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^login$ index.php?action=login [L,QSA]
+
+RewriteRule ^logout$ index.php?action=logout [L,QSA]
+
+RewriteRule ^inscription$ index.php?action=inscription [L,QSA]
+
+RewriteRule ^admin$ index.php?action=admin [L,QSA]
+
+RewriteRule ^reservation$ index.php?action=reservation [L,QSA]
