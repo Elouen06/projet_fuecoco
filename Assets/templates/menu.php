@@ -1,4 +1,4 @@
-<div class="logo">inserer logo</div>
+<div class="logo">inserer logo ici</div>
 <nav>
     <?php
     if (isset($_SESSION['user'])) {
