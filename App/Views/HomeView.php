@@ -29,8 +29,8 @@ class HomeView {
                     <label for="num-guests">Nombre de voyageurs :</label>
                     <input type="number" id="num-guests" name="num-guests" value="1" min="1" max="4" required>
                     
-                    <label for="total-price-input">Prix total :</label>
-                    <input type="text" id="total-price-input" name="total-price" readonly>
+                    <label for="total-price">Prix total :</label>
+                    <input type="text" id="total-price" name="total-price" readonly required>
                     
                     <button type="submit">Réserver</button>
                 </form>
@@ -44,7 +44,6 @@ class HomeView {
                 <div class="calendar" id="calendar">
                     ' . $calendar . '
                 </div>
-                <div id="total-price"></div>
             </div>
 
             <!-- Map -->

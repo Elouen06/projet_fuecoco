@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let endDate = null;
     let currentMonth = new Date().getMonth();
     let currentYear = new Date().getFullYear();
-    let numGuests = parseInt(numGuestsInput.value); // Nombre de voyageurs
+    let numGuests = parseInt(numGuestsInput.value);
 
     function generateCalendar(month, year) {
         const calendar = document.getElementById('calendar');
@@ -33,9 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
             table += '<td></td>';
         }
 
+        const today = new Date().toISOString().split('T')[0];
+
         for (let day = 1; day <= daysInMonth; day++) {
             const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            table += `<td class="available" data-date="${date}">${day}</td>`;
+            const isPastDate = date < today;
+            table += `<td class="${isPastDate ? 'disabled' : 'available'}" data-date="${date}">${day}</td>`;
             if ((day + firstDayOfMonth - 1) % 7 === 0) {
                 table += '</tr><tr>';
             }
@@ -58,10 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     endDate = null;
                     startDateInput.value = startDate;
                     endDateInput.value = '';
-                    totalPriceElement.innerText = ''; // Réinitialiser le prix total
                     document.querySelectorAll('.calendar td').forEach(cell => cell.classList.remove('selected'));
                     this.classList.add('selected');
-                } else if (!endDate && selectedDate >= startDate) {
+                    calculateTotalPrice(); // Calculer le prix total
+                } else if (!endDate && selectedDate > startDate) {
                     endDate = selectedDate;
                     endDateInput.value = endDate;
                     document.querySelectorAll('.calendar td').forEach(cell => {
@@ -71,7 +74,31 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                     calculateTotalPrice(); // Calculer le prix total
+                } else if (!endDate && selectedDate === startDate) {
+                    // Si la date sélectionnée est la même que la date de début, réinitialiser
+                    startDate = selectedDate;
+                    endDate = null;
+                    startDateInput.value = startDate;
+                    endDateInput.value = '';
+                    document.querySelectorAll('.calendar td').forEach(cell => cell.classList.remove('selected'));
+                    this.classList.add('selected');
+                    calculateTotalPrice(); // Calculer le prix total
+                } else if (!endDate && selectedDate < startDate) {
+                    // Si une date antérieure est sélectionnée, remplacer la date de début
+                    startDate = selectedDate;
+                    endDate = null;
+                    startDateInput.value = startDate;
+                    endDateInput.value = '';
+                    document.querySelectorAll('.calendar td').forEach(cell => cell.classList.remove('selected'));
+                    this.classList.add('selected');
+                    calculateTotalPrice(); // Calculer le prix total
                 }
+            });
+        });
+
+        document.querySelectorAll('.calendar td.disabled').forEach(cell => {
+            cell.addEventListener('click', function() {
+                alert("Cette date est déjà passée.");
             });
         });
     }
@@ -81,9 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const start = new Date(startDate);
             const end = new Date(endDate);
             const nights = (end - start) / (1000 * 60 * 60 * 24);
-            const totalPrice = nights * pricePerNight * numGuests; // Inclure le nombre de voyageurs dans le calcul
-            totalPriceElement.innerText = `Prix total : ${totalPrice}€`;
-            document.getElementById('total-price-input').value = totalPrice; // Mise à jour du champ de prix total dans le formulaire
+            const totalPrice = nights * pricePerNight * numGuests;
+            totalPriceElement.value = `Prix total : ${totalPrice}€`;
+        } else {
+            totalPriceElement.value = 'Prix total : 0€';
         }
     }
 
