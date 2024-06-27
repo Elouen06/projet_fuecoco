@@ -10,14 +10,18 @@ class LoginView {
                 <button type="submit">Logout</button>
             </form>';
         } else {
+            $csrf_token = generate_csrf_token();
             echo '
             <h1>Connecte-toi</h1>
-            <form class="vertical" action="login" method="post">
+            <form class="vertical" action="?action=login" method="post">
+                <input type="hidden" name="csrf_token" value="' . $csrf_token . '">
                 <label for="email">Email</label><input type="text" name="email" id="email">
                 <label for="password">Mot de passe</label><input type="password" name="password" id="password">
                 <button>Se connecter</button>
-            </form>';
+            </form>
+            <a href="?action=forgot_password">Mot de passe oublié ?</a>';
         }
     }
 }
+
 ?>

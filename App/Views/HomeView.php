@@ -3,6 +3,8 @@ namespace Views;
 
 class HomeView {
     public function render($calendar) {
+        // Générer le token CSRF
+        $csrfToken = generate_csrf_token();
         echo '<main>
             <!-- Carousel -->
             <div id="carousel" class="carousel">
@@ -19,7 +21,7 @@ class HomeView {
             <!-- Calendrier de réservation -->
             <div id="reservation">
                 <h2>Réservez votre séjour</h2>
-                <form>
+                <form action="?action=reserve" method="post">
                     <label for="start-date">Date de début :</label>
                     <input type="date" id="start-date" name="start-date" required>
                     
@@ -31,6 +33,8 @@ class HomeView {
                     
                     <label for="total-price">Prix total :</label>
                     <input type="text" id="total-price" name="total-price" readonly required>
+
+                    <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
                     
                     <button type="submit">Réserver</button>
                 </form>

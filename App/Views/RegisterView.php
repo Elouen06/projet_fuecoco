@@ -3,8 +3,10 @@ namespace Views;
 
 class RegisterView { 
     public function initForm() {
+        $csrf_token = generate_csrf_token();
         echo '<h1>Créer un compte</h1>
-        <form class="vertical" action="inscription" method="post">
+        <form class="vertical" action="?action=inscription" method="post">
+            <input type="hidden" name="csrf_token" value="' . $csrf_token . '">
             <label for="username">Nom d\'utilisateur</label>
             <input type="text" name="username" id="username" required>
             
