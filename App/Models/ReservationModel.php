@@ -48,4 +48,13 @@ class ReservationModel {
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+    public function updateReservation($reservationId, $startDate, $endDate, $numGuests, $totalPrice) {
+        $stmt = $this->db->prepare("UPDATE reservations SET start_date = :start_date, end_date = :end_date, num_guests = :num_guests, total_price = :total_price, confirmed = 1 WHERE id = :reservation_id");
+        $stmt->bindParam(':start_date', $startDate);
+        $stmt->bindParam(':end_date', $endDate);
+        $stmt->bindParam(':num_guests', $numGuests);
+        $stmt->bindParam(':total_price', $totalPrice);
+        $stmt->bindParam(':reservation_id', $reservationId);
+        $stmt->execute();
+    }
 }

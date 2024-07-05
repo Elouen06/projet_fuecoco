@@ -6,6 +6,29 @@ use Views\ReservationView;
 
 class ReservationController
 {
+    protected $reservationModel;
+
+    public function __construct()
+    {
+        $this->reservationModel = new ReservationModel();
+        $this->cleanUpExpiredReservations();
+    }
+
+    private function cleanUpExpiredReservations()
+    {
+        $minutes = 15;
+        $oldReservations = $this->reservationModel->getUnconfirmedReservationsOlderThan($minutes);
+        foreach ($oldReservations as $reservation) {
+            $this->reservationModel->deleteReservation($reservation['id']);
+        }
+    }
+
+    private function isReservationValid($reservationId)
+    {
+        $reservation = $this->reservationModel->getReservationById($reservationId);
+        return $reservation && !$reservation['confirmed'] && (strtotime($reservation['created_at']) >= strtotime('-15 minutes'));
+    }
+
     public function reserve()
     {
         session_start();
@@ -21,8 +44,7 @@ class ReservationController
             $numGuests = $_POST['num-guests'];
             $totalPrice = 100 * (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) * $numGuests;
 
-            $reservationModel = new ReservationModel();
-            $reservationId = $reservationModel->createReservation($userId, $startDate, $endDate, $numGuests, $totalPrice);
+            $reservationId = $this->reservationModel->createReservation($userId, $startDate, $endDate, $numGuests, $totalPrice);
             $_SESSION['reservation_id'] = $reservationId;
             header('Location: index.php?action=reservation_summary');
             exit;
@@ -32,14 +54,12 @@ class ReservationController
     public function reservationSummary()
     {
         session_start();
-        if (!isset($_SESSION['reservation_id'])) {
+        if (!isset($_SESSION['reservation_id']) || !$this->isReservationValid($_SESSION['reservation_id'])) {
             header('Location: index.php');
             exit;
         }
 
-        $reservationModel = new ReservationModel();
-        $reservation = $reservationModel->getReservationById($_SESSION['reservation_id']);
-
+        $reservation = $this->reservationModel->getReservationById($_SESSION['reservation_id']);
         $reservationView = new ReservationView();
         $reservationView->render($reservation);
     }
@@ -47,20 +67,28 @@ class ReservationController
     public function confirmReservation()
     {
         session_start();
-        if (!isset($_SESSION['reservation_id'])) {
-            header('Location: index.php');
+        if (!isset($_SESSION['reservation_id']) || !$this->isReservationValid($_SESSION['reservation_id'])) {
+            header('Location: index.php?action=reservation_summary');
             exit;
         }
 
-        $reservationModel = new ReservationModel();
-        $reservationModel->updateReservationWithDeposit($_SESSION['reservation_id']);
-        // Mark the reservation as confirmed
-        $stmt = $reservationModel->db->prepare("UPDATE reservations SET confirmed = 1 WHERE id = :reservation_id");
-        $stmt->bindParam(':reservation_id', $_SESSION['reservation_id']);
-        $stmt->execute();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $startDate = $_POST['start_date'];
+            $endDate = $_POST['end_date'];
+            $numGuests = $_POST['num_guests'];
+            $basePrice = 100 * (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) * $numGuests;
 
-        unset($_SESSION['reservation_id']);
-        header('Location: index.php?action=reservation_complete');
-        exit;
+            // Ajouter la caution de 500€
+            $totalPriceWithDeposit = $basePrice + 500;
+
+            $this->reservationModel->updateReservation($_SESSION['reservation_id'], $startDate, $endDate, $numGuests, $totalPriceWithDeposit);
+
+            // Assurez-vous que reservation_id est toujours défini
+            error_log('Reservation ID in session before redirect to payment_choice: ' . $_SESSION['reservation_id']);
+
+            header('Location: index.php?action=payment_choice');
+            exit;
+        }
     }
 }
+?>
