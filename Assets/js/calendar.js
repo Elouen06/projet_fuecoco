@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event triggered');
-
     const startDateInput = document.getElementById('start-date');
     const endDateInput = document.getElementById('end-date');
     const numGuestsInput = document.getElementById('num-guests');
@@ -33,12 +31,17 @@ document.addEventListener('DOMContentLoaded', function() {
             table += '<td></td>';
         }
 
-        const today = new Date().toISOString().split('T')[0];
-
         for (let day = 1; day <= daysInMonth; day++) {
             const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const isPastDate = date < today;
-            table += `<td class="${isPastDate ? 'disabled' : 'available'}" data-date="${date}">${day}</td>`;
+            const isBlocked = blockedDates.includes(date);
+            const isReserved = reservedDates.includes(date);
+
+            // Correction de la logique
+            let className = isReserved ? 'blocked' : isBlocked ? 'reserved' : 'available';
+            let badge = isReserved ? '<div class="blocked-badge">Bloqué</div>' : isBlocked ? '<div class="reservation-badge">Réservé</div>' : '';
+
+            table += `<td class="${className}" data-date="${date}">${day}${badge}</td>`;
+
             if ((day + firstDayOfMonth - 1) % 7 === 0) {
                 table += '</tr><tr>';
             }
@@ -96,9 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        document.querySelectorAll('.calendar td.disabled').forEach(cell => {
+        document.querySelectorAll('.calendar td.blocked, .calendar td.reserved').forEach(cell => {
             cell.addEventListener('click', function() {
-                alert("Cette date est déjà passée.");
+                alert("Cette date est déjà réservée ou bloquée.");
             });
         });
     }

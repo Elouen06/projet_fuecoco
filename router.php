@@ -1,5 +1,4 @@
 <?php
-
 require 'vendor/autoload.php';
 
 use Controllers\RegisterController;
@@ -8,6 +7,7 @@ use Controllers\HomeController;
 use Controllers\ForgotPasswordController;
 use Controllers\ReservationController;
 use Controllers\PaymentController;
+use Controllers\AdminController;
 
 $action = $_GET['action'] ?? '';
 
@@ -75,40 +75,67 @@ switch ($action) {
         $registerController->ConfirmEmail();
         break;
 
-        case 'reserve':
-            $reservationController = new ReservationController();
-            $reservationController->reserve();
-            break;
+    case 'reserve':
+        $reservationController = new ReservationController();
+        $reservationController->reserve();
+        break;
+
+    case 'reservation_summary':
+        $reservationController = new ReservationController();
+        $reservationController->reservationSummary();
+        break;
+
+    case 'confirm_reservation':
+        $reservationController = new ReservationController();
+        $reservationController->confirmReservation();
+        break;
+
+    case 'payment_choice':
+        $paymentController = new PaymentController();
+        $paymentController->paymentChoice();
+        break;
+
+    case 'process_payment':
+        $paymentController = new PaymentController();
+        $paymentController->processPayment();
+        break;
+
+    case 'user_reservations':
+        $reservationController = new ReservationController();
+        $reservationController->userReservations();
+        break;
     
-        case 'reservation_summary':
-            $reservationController = new ReservationController();
-            $reservationController->reservationSummary();
-            break;
-    
-        case 'confirm_reservation':
-            $reservationController = new ReservationController();
-            $reservationController->confirmReservation();
-            break;
-    
-        case 'payment_choice':
-            $paymentController = new PaymentController();
-            $paymentController->paymentChoice();
-            break;
-    
-        case 'process_payment':
-            $paymentController = new PaymentController();
-            $paymentController->processPayment();
-            break;
-    
-        case 'mes_reservations':
-            // Ajouter le code pour afficher les réservations de l'utilisateur
-            // Par exemple:
-            // $reservationController = new ReservationController();
-            // $reservationController->showReservations();
-            break;
+    case 'cancel_user_reservation':
+        $reservationController = new ReservationController();
+        if (isset($_GET['id'])) {
+            $reservationController->cancelUserReservation($_GET['id']);
+        }
+        break;
 
     case 'admin':
-        // Ajouter la logique pour l'administration ici
+        $adminController = new AdminController();
+        $adminController->dashboard();
+        break;
+    
+    case 'admin_cancel_reservation':
+        $adminController = new AdminController();
+        if (isset($_GET['id'])) {
+            $adminController->cancelReservation($_GET['id']);
+        }
+        break;
+    
+    case 'admin_block_dates':
+        $adminController = new AdminController();
+        $adminController->blockDates();
+        break;
+
+    case 'block_date':
+        $adminController = new AdminController();
+        $adminController->blockDate();
+        break;
+    
+    case 'unblock_date':
+        $adminController = new AdminController();
+        $adminController->unblockDate();
         break;
 }
-?>

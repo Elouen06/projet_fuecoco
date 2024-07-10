@@ -22,6 +22,7 @@ class LoginController {
                 if ($result) {
                     // Connexion réussie
                     $_SESSION['user'] = $email;
+                    $_SESSION['id_level'] = $model->getUserLevel($email);
                     echo "Login successful!";
                     header("Location: index.php");
                     exit();
@@ -48,4 +49,3 @@ class LoginController {
         }
     }
 }
-?>

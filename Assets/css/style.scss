@@ -4,6 +4,13 @@ $secondary-color: #f2f2f2;
 $text-color: #333;
 $link-color: #4CAF50;
 $link-hover-color: #388E3C;
+$button-bg-color: #007bff;
+$button-hover-bg-color: darken(#007bff, 10%);
+$reserved-color: #FFCDD2;
+$blocked-color: #FFF3CD;
+$reservation-badge-bg: red;
+$reservation-badge-color: white;
+$blocked-badge-bg: orange;
 
 /* Global Styles */
 body {
@@ -29,7 +36,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     .logo {
         font-size: 24px;
         font-weight: bold;
@@ -89,14 +96,13 @@ header {
     }
 }
 
-
 /* Footer Styles */
 footer {
     background-color: $primary-color;
     color: white;
     padding: 20px;
     text-align: center;
-    
+
     .social-links {
         a {
             margin: 0 10px;
@@ -104,7 +110,9 @@ footer {
         }
     }
 }
-#reservation {
+
+/* Reservation Section Styles */
+.calendar-block {
     padding: 20px;
     background-color: white;
     margin-top: 20px;
@@ -127,13 +135,13 @@ footer {
         button {
             margin-top: 20px;
             padding: 10px;
-            background-color: #007bff;
+            background-color: $button-bg-color;
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 4px;
             &:hover {
-                background-color: darken(#007bff, 10%);
+                background-color: $button-hover-bg-color;
             }
         }
     }
@@ -145,13 +153,13 @@ footer {
         margin-bottom: 10px;
 
         button {
-            background-color: #007bff;
+            background-color: $button-bg-color;
             color: white;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
             &:hover {
-                background-color: darken(#007bff, 10%);
+                background-color: $button-hover-bg-color;
             }
         }
 
@@ -178,7 +186,7 @@ footer {
             }
 
             th {
-                background-color: #007bff;
+                background-color: $button-bg-color;
                 color: white;
             }
 
@@ -189,11 +197,33 @@ footer {
                 &.selected {
                     background-color: #b3e5fc;
                 }
-                &.booked {
-                    background-color: #FFCDD2; /* Couleur pour les dates réservées */
+                &.reserved {
+                    background-color: $reserved-color;
+                    cursor: not-allowed;
+                }
+                &.blocked {
+                    background-color: $blocked-color;
                     cursor: not-allowed;
                 }
             }
         }
     }
+}
+
+.reservation-badge {
+    display: block;
+    background-color: $reservation-badge-bg;
+    color: $reservation-badge-color;
+    font-size: 10px;
+    padding: 2px;
+    text-align: center;
+}
+
+.blocked-badge {
+    display: block;
+    background-color: $blocked-badge-bg;
+    color: $reservation-badge-color;
+    font-size: 10px;
+    padding: 2px;
+    text-align: center;
 }

@@ -13,12 +13,17 @@ class HomeController
         $this->cleanUpUnconfirmedReservations();
 
         $homeModel = new HomeModel();
+        $reservationModel = new ReservationModel();
+        
         $month = date('m');
         $year = date('Y');
+        
         $calendar = $homeModel->generateCalendar($month, $year);
+        $reservedDates = $reservationModel->getReservedDates();
+        $blockedDates = array_column($reservationModel->getBlockedDates(), 'date');
         
         $homeView = new HomeView();
-        $homeView->render($calendar);
+        $homeView->render($calendar, $reservedDates, $blockedDates);
     }
 
     private function cleanUpUnconfirmedReservations()
@@ -31,5 +36,3 @@ class HomeController
         }
     }
 }
-
-?>

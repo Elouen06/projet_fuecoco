@@ -42,6 +42,20 @@ class ReservationController
             $startDate = $_POST['start-date'];
             $endDate = $_POST['end-date'];
             $numGuests = $_POST['num-guests'];
+
+            // Vérification des dates disponibles
+            $reservedDates = $this->reservationModel->getReservedDates();
+            $blockedDates = $this->reservationModel->getBlockedDates();
+            $selectedDates = $this->generateDateRange($startDate, $endDate);
+
+            foreach ($selectedDates as $date) {
+                if (in_array($date, $reservedDates) || in_array($date, $blockedDates)) {
+                    $_SESSION['error_message'] = "Les dates sélectionnées ne sont pas disponibles.";
+                    header('Location: index.php?action=reservation');
+                    exit;
+                }
+            }
+
             $totalPrice = 100 * (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) * $numGuests;
 
             $reservationId = $this->reservationModel->createReservation($userId, $startDate, $endDate, $numGuests, $totalPrice);
@@ -49,6 +63,19 @@ class ReservationController
             header('Location: index.php?action=reservation_summary');
             exit;
         }
+    }
+
+    private function generateDateRange($startDate, $endDate) {
+        $period = new \DatePeriod(
+            new \DateTime($startDate),
+            new \DateInterval('P1D'),
+            (new \DateTime($endDate))->modify('+1 day')
+        );
+        $dates = [];
+        foreach ($period as $date) {
+            $dates[] = $date->format('Y-m-d');
+        }
+        return $dates;
     }
 
     public function reservationSummary()
@@ -83,12 +110,41 @@ class ReservationController
 
             $this->reservationModel->updateReservation($_SESSION['reservation_id'], $startDate, $endDate, $numGuests, $totalPriceWithDeposit);
 
-            // Assurez-vous que reservation_id est toujours défini
-            error_log('Reservation ID in session before redirect to payment_choice: ' . $_SESSION['reservation_id']);
-
             header('Location: index.php?action=payment_choice');
             exit;
         }
     }
+
+    public function userReservations()
+    {
+        session_start();
+        if (!isset($_SESSION['id'])) {
+            header('Location: index.php?action=login');
+            exit;
+        }
+
+        $reservations = $this->reservationModel->getUserReservations($_SESSION['id']);
+        $reservationView = new ReservationView();
+        $reservationView->userReservations($reservations);
+    }
+
+    public function cancelUserReservation($reservationId)
+    {
+        session_start();
+        if (!isset($_SESSION['id'])) {
+            header('Location: index.php?action=login');
+            exit;
+        }
+
+        $this->reservationModel->cancelReservation($reservationId);
+        // Envoyer un mail à l'administrateur
+        $this->sendCancellationEmailToAdmin($reservationId);
+        $_SESSION['message'] = "Votre réservation a été annulée avec succès.";
+        header('Location: index.php?action=user_reservations');
+    }
+
+    private function sendCancellationEmailToAdmin($reservationId)
+    {
+        // Code pour envoyer un mail à l'administrateur
+    }
 }
-?>

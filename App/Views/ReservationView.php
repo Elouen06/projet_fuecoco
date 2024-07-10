@@ -42,5 +42,21 @@ class ReservationView {
             </form>
         </main>';
     }
+
+    public function renderUserReservations($reservations) {
+        echo '<h2>Mes Réservations</h2>';
+        echo '<table>';
+        echo '<tr><th>ID</th><th>Date de début</th><th>Date de fin</th><th>Nombre de voyageurs</th><th>Statut</th><th>Action</th></tr>';
+        foreach ($reservations as $reservation) {
+            echo '<tr>';
+            echo '<td>' . htmlspecialchars($reservation['id']) . '</td>';
+            echo '<td>' . htmlspecialchars($reservation['start_date']) . '</td>';
+            echo '<td>' . htmlspecialchars($reservation['end_date']) . '</td>';
+            echo '<td>' . htmlspecialchars($reservation['num_guests']) . '</td>';
+            echo '<td>' . htmlspecialchars($reservation['status']) . '</td>';
+            echo '<td><a href="?action=cancel_user_reservation&id=' . htmlspecialchars($reservation['id']) . '">Annuler</a></td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
 }
-?>

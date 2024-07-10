@@ -11,7 +11,7 @@ class RegisterModel {
     public function __construct() {
         $database = new Database();
         $this->db = $database->getConnection();
-    } 
+    }
 
     public function createUser() {
         $username = $_POST['username'];
@@ -21,12 +21,14 @@ class RegisterModel {
         // Hash le mot de passe avant de le stocker
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $confirmation_token = bin2hex(random_bytes(32));
+        $id_lvl = 1; // Attribuer id_lvl à 1 par défaut
 
         try {
-            $stmt = $this->db->prepare("INSERT INTO users (username, email, pw, confirmation_token) VALUES (:username, :email, :pw, :confirmation_token)");
+            $stmt = $this->db->prepare("INSERT INTO users (username, email, pw, id_level, confirmation_token) VALUES (:username, :email, :pw, :id_level, :confirmation_token)");
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':pw', $hashedPassword);
+            $stmt->bindParam(':id_level', $id_lvl); // Assigner le niveau de l'utilisateur
             $stmt->bindParam(':confirmation_token', $confirmation_token);
             $stmt->execute();
 
@@ -83,5 +85,3 @@ class RegisterModel {
         }
     }
 }
-
-?>
