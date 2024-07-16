@@ -12,22 +12,31 @@ class AdminModel {
     }
 
     public function getBlockedDates() {
-        $stmt = $this->db->query("SELECT date FROM blocked_dates");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $gbd = $this->db->query("SELECT date FROM blocked_dates");
+        return $gbd->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function updateBlockedDates($blockedDates) {
+    public function addBlockedDates($blockedDates) {
         $this->db->beginTransaction();
-        $stmt = $this->db->prepare("INSERT INTO blocked_dates (date) VALUES (:date) ON DUPLICATE KEY UPDATE date = :date");
+        $ubd = $this->db->prepare("INSERT INTO blocked_dates (date) VALUES (:date) ON DUPLICATE KEY UPDATE date = :date");
         foreach ($blockedDates as $date) {
-            $stmt->execute(['date' => $date]);
+            $ubd->execute(['date' => $date]);
+        }
+        $this->db->commit();
+    }
+
+    public function deleteUnblockedDates($unblockedDates) {
+        $this->db->beginTransaction();
+        $dbd = $this->db->prepare("DELETE FROM blocked_dates WHERE date = :date");
+        foreach ($unblockedDates as $date) {
+            $dbd->execute(['date' => $date]);
         }
         $this->db->commit();
     }
 
     public function getReservedDates() {
-        $stmt = $this->db->query("SELECT start_date, end_date FROM reservations WHERE status != 'Cancelled'");
-        $reservations = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $grd = $this->db->query("SELECT start_date, end_date FROM reservations WHERE status != 'Cancelled'");
+        $reservations = $grd->fetchAll(\PDO::FETCH_ASSOC);
         $reservedDates = [];
         foreach ($reservations as $reservation) {
             $period = new \DatePeriod(

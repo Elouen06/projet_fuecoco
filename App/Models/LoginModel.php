@@ -12,10 +12,10 @@ class LoginModel {
     }
 
     public function authenticate($email, $password) {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $auth = $this->db->prepare("SELECT * FROM users WHERE email = :email");
+        $auth->bindParam(':email', $email);
+        $auth->execute();
+        $user = $auth->fetch(\PDO::FETCH_ASSOC);
 
         if ($user && $user['is_confirmed'] == 1 && password_verify($password, $user['pw'])) {
             $_SESSION['id'] = $user['id'];
@@ -27,10 +27,10 @@ class LoginModel {
     }
 
     public function getUserLevel($email) {
-        $stmt = $this->db->prepare("SELECT id_level FROM users WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $gul = $this->db->prepare("SELECT id_level FROM users WHERE email = :email");
+        $gul->bindParam(':email', $email);
+        $gul->execute();
+        $user = $gul->fetch(\PDO::FETCH_ASSOC);
         return $user['id_level'];
     }
 }

@@ -1,13 +1,37 @@
 RewriteEngine On
+
+# Ignorer les fichiers et les dossiers existants
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^login$ index.php?action=login [L,QSA]
+# Redirections pour la page d'accueil
+RewriteRule ^accueil$ index.php [L,QSA]
 
-RewriteRule ^logout$ index.php?action=logout [L,QSA]
+# Redirections pour la connexion
+RewriteRule ^connexion$ index.php?action=login [L,QSA]
+RewriteRule ^connexion/oublie$ index.php?action=forgot_password [L,QSA]
+RewriteRule ^connexion/reinitialisation$ index.php?action=reset_password [L,QSA]
+RewriteRule ^connexion/confirmation$ index.php?action=confirm_email [L,QSA]
 
+# Redirection pour la déconnexion
+RewriteRule ^deconnexion$ index.php?action=logout [L,QSA]
+
+# Redirection pour l'inscription
 RewriteRule ^inscription$ index.php?action=inscription [L,QSA]
 
-RewriteRule ^admin$ index.php?action=admin [L,QSA]
+# Redirections pour les réservations
+RewriteRule ^reservation$ index.php?action=reserve [L,QSA]
+RewriteRule ^reservation/résumé$ index.php?action=reservation_summary [L,QSA]
+RewriteRule ^reservation/confirmation$ index.php?action=confirm_reservation [L,QSA]
+RewriteRule ^reservation/choix_du_paiment$ index.php?action=payment_choice [L,QSA]
+RewriteRule ^reservation/processus_du_paiment$ index.php?action=process_payment [L,QSA]
 
-RewriteRule ^reservation$ index.php?action=reservation [L,QSA]
+# Redirections pour mes réservations
+RewriteRule ^mes_reservation$ index.php?action=user_reservations [L,QSA]
+RewriteRule ^mes_reservation/cancel$ index.php?action=cancel_user_reservation [L,QSA]
+
+# Redirections pour l'admin
+RewriteRule ^admin$ index.php?action=admin [L,QSA]
+RewriteRule ^admin/annulation$ index.php?action=admin_cancel_reservation [L,QSA]
+RewriteRule ^admin/dates_bloqué$ index.php?action=admin_block_dates [L,QSA]
+RewriteRule ^admin/dates_debloqué$ index.php?action=unblock_date [L,QSA]

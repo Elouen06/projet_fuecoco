@@ -11,6 +11,8 @@ $blocked-color: #FFF3CD;
 $reservation-badge-bg: red;
 $reservation-badge-color: white;
 $blocked-badge-bg: orange;
+$selected-to-add-color: #b3e5fc;
+$selected-to-remove-color: #ff7961;
 
 /* Global Styles */
 body {
@@ -24,6 +26,7 @@ body {
 a {
     color: $link-color;
     text-decoration: none;
+
     &:hover {
         color: $link-hover-color;
     }
@@ -66,8 +69,10 @@ header {
     overflow: hidden;
     width: 100%;
     height: 400px;
+
     .carousel-item {
         flex: 1 0 100%;
+
         img {
             width: 100%;
             height: 100%;
@@ -80,6 +85,7 @@ header {
 #map {
     width: 100%;
     height: 450px;
+
     iframe {
         width: 100%;
         height: 100%;
@@ -91,6 +97,7 @@ header {
 #description {
     padding: 20px;
     background-color: white;
+
     h2 {
         margin-top: 0;
     }
@@ -140,6 +147,7 @@ footer {
             border: none;
             cursor: pointer;
             border-radius: 4px;
+
             &:hover {
                 background-color: $button-hover-bg-color;
             }
@@ -158,6 +166,7 @@ footer {
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+
             &:hover {
                 background-color: $button-hover-bg-color;
             }
@@ -171,12 +180,14 @@ footer {
 
     .calendar {
         margin-top: 20px;
+
         table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
 
-            th, td {
+            th,
+            td {
                 border: 1px solid #ccc;
                 padding: 0;
                 text-align: center;
@@ -194,16 +205,25 @@ footer {
                 &.available {
                     background-color: #f9f9f9;
                 }
-                &.selected {
-                    background-color: #b3e5fc;
-                }
+
                 &.reserved {
                     background-color: $reserved-color;
                     cursor: not-allowed;
                 }
+
                 &.blocked {
                     background-color: $blocked-color;
                     cursor: not-allowed;
+                }
+
+                &.selected-to-add {
+                    background-color: $selected-to-add-color;
+                    color: white;
+                }
+
+                &.selected-to-remove {
+                    background-color: $selected-to-remove-color;
+                    color: white;
                 }
             }
         }

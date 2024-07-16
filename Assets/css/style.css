@@ -150,7 +150,8 @@ footer .social-links a {
   border-collapse: collapse;
   table-layout: fixed;
 }
-.calendar-block .calendar table th, .calendar-block .calendar table td {
+.calendar-block .calendar table th,
+.calendar-block .calendar table td {
   border: 1px solid #ccc;
   padding: 0;
   text-align: center;
@@ -165,9 +166,6 @@ footer .social-links a {
 .calendar-block .calendar table td.available {
   background-color: #f9f9f9;
 }
-.calendar-block .calendar table td.selected {
-  background-color: #b3e5fc;
-}
 .calendar-block .calendar table td.reserved {
   background-color: #FFCDD2;
   cursor: not-allowed;
@@ -175,6 +173,14 @@ footer .social-links a {
 .calendar-block .calendar table td.blocked {
   background-color: #FFF3CD;
   cursor: not-allowed;
+}
+.calendar-block .calendar table td.selected-to-add {
+  background-color: #b3e5fc;
+  color: white;
+}
+.calendar-block .calendar table td.selected-to-remove {
+  background-color: #ff7961;
+  color: white;
 }
 
 .reservation-badge {

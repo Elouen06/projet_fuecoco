@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     let currentMonth = new Date().getMonth();
     let currentYear = new Date().getFullYear();
-    let selectedDates = [];
+    let selectedDatesToAdd = [];
+    let selectedDatesToRemove = [];
 
     function generateCalendar(month, year) {
         const calendar = document.getElementById('calendar');
@@ -50,13 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
             cell.addEventListener('click', function() {
                 const date = this.getAttribute('data-date');
                 if (this.classList.contains('blocked')) {
-                    this.classList.remove('blocked');
-                    blockedDates = blockedDates.filter(d => d !== date);
-                    selectedDates = selectedDates.filter(d => d !== date);
+                    this.classList.toggle('selected-to-remove');
+                    if (this.classList.contains('selected-to-remove')) {
+                        selectedDatesToRemove.push(date);
+                    } else {
+                        selectedDatesToRemove = selectedDatesToRemove.filter(d => d !== date);
+                    }
                 } else {
-                    this.classList.add('blocked');
-                    blockedDates.push(date);
-                    selectedDates.push(date);
+                    this.classList.toggle('selected-to-add');
+                    if (this.classList.contains('selected-to-add')) {
+                        selectedDatesToAdd.push(date);
+                    } else {
+                        selectedDatesToAdd = selectedDatesToAdd.filter(d => d !== date);
+                    }
                 }
             });
         });
@@ -88,9 +95,14 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCalendar();
     });
 
-    document.getElementById('block-form').addEventListener('submit', function(event) {
-        const blockedDatesInput = document.getElementById('blocked-dates-input');
-        blockedDatesInput.value = JSON.stringify(selectedDates);
+    document.getElementById('add-block-form').addEventListener('submit', function(event) {
+        const blockedDatesInput = document.getElementById('add-blocked-dates-input');
+        blockedDatesInput.value = JSON.stringify(selectedDatesToAdd.filter(date => date !== ''));
+    });
+
+    document.getElementById('remove-block-form').addEventListener('submit', function(event) {
+        const blockedDatesInput = document.getElementById('remove-blocked-dates-input');
+        blockedDatesInput.value = JSON.stringify(selectedDatesToRemove.filter(date => date !== ''));
     });
 
     updateCalendar();

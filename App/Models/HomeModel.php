@@ -3,10 +3,15 @@ namespace Models;
 
 use App\Database;
 
-class HomeModel
-{
-    public function generateCalendar($month, $year)
-    {
+class HomeModel {
+    protected $db;
+
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+    }
+
+    public function generateCalendar($month, $year) {
         $daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $firstDayOfMonth = (date('N', strtotime("$year-$month-01")) - 1) % 7;
@@ -47,5 +52,9 @@ class HomeModel
 
         return ob_get_clean(); // Return the contents of the output buffer
     }
+
+    public function getBlockedDates() {
+        $gbd = $this->db->query("SELECT date FROM blocked_dates");
+        return $gbd->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
-?>

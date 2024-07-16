@@ -12,73 +12,73 @@ class ReservationModel {
     }
 
     public function createReservation($userId, $startDate, $endDate, $numGuests, $totalPrice) {
-        $stmt = $this->db->prepare("INSERT INTO reservations (user_id, start_date, end_date, num_guests, total_price, created_at) VALUES (:user_id, :start_date, :end_date, :num_guests, :total_price, NOW())");
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->bindParam(':start_date', $startDate);
-        $stmt->bindParam(':end_date', $endDate);
-        $stmt->bindParam(':num_guests', $numGuests);
-        $stmt->bindParam(':total_price', $totalPrice);
-        $stmt->execute();
+        $cr = $this->db->prepare("INSERT INTO reservations (user_id, start_date, end_date, num_guests, total_price, created_at) VALUES (:user_id, :start_date, :end_date, :num_guests, :total_price, NOW())");
+        $cr->bindParam(':user_id', $userId);
+        $cr->bindParam(':start_date', $startDate);
+        $cr->bindParam(':end_date', $endDate);
+        $cr->bindParam(':num_guests', $numGuests);
+        $cr->bindParam(':total_price', $totalPrice);
+        $cr->execute();
         
         return $this->db->lastInsertId();
     }
 
     public function getReservationById($reservationId) {
-        $stmt = $this->db->prepare("SELECT * FROM reservations WHERE id = :reservation_id");
-        $stmt->bindParam(':reservation_id', $reservationId);
-        $stmt->execute();
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $grbi = $this->db->prepare("SELECT * FROM reservations WHERE id = :reservation_id");
+        $grbi->bindParam(':reservation_id', $reservationId);
+        $grbi->execute();
+        return $grbi->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function updateReservationWithDeposit($reservationId) {
-        $stmt = $this->db->prepare("UPDATE reservations SET total_price = total_price + 500 WHERE id = :reservation_id");
-        $stmt->bindParam(':reservation_id', $reservationId);
-        $stmt->execute();
+        $urwd = $this->db->prepare("UPDATE reservations SET total_price = total_price + 500 WHERE id = :reservation_id");
+        $urwd->bindParam(':reservation_id', $reservationId);
+        $urwd->execute();
     }
 
     public function deleteReservation($reservationId) {
-        $stmt = $this->db->prepare("DELETE FROM reservations WHERE id = :reservation_id");
-        $stmt->bindParam(':reservation_id', $reservationId);
-        $stmt->execute();
+        $dr = $this->db->prepare("DELETE FROM reservations WHERE id = :reservation_id");
+        $dr->bindParam(':reservation_id', $reservationId);
+        $dr->execute();
     }
 
     public function getUnconfirmedReservationsOlderThan($minutes) {
-        $stmt = $this->db->prepare("SELECT * FROM reservations WHERE created_at < NOW() - INTERVAL :minutes MINUTE AND confirmed = 0");
-        $stmt->bindParam(':minutes', $minutes, \PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $gurot = $this->db->prepare("SELECT * FROM reservations WHERE created_at < NOW() - INTERVAL :minutes MINUTE AND confirmed = 0");
+        $gurot->bindParam(':minutes', $minutes, \PDO::PARAM_INT);
+        $gurot->execute();
+        return $gurot->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function updateReservation($reservationId, $startDate, $endDate, $numGuests, $totalPrice) {
-        $stmt = $this->db->prepare("UPDATE reservations SET start_date = :start_date, end_date = :end_date, num_guests = :num_guests, total_price = :total_price, confirmed = 1 WHERE id = :reservation_id");
-        $stmt->bindParam(':start_date', $startDate);
-        $stmt->bindParam(':end_date', $endDate);
-        $stmt->bindParam(':num_guests', $numGuests);
-        $stmt->bindParam(':total_price', $totalPrice);
-        $stmt->bindParam(':reservation_id', $reservationId);
-        $stmt->execute();
+        $ur = $this->db->prepare("UPDATE reservations SET start_date = :start_date, end_date = :end_date, num_guests = :num_guests, total_price = :total_price, confirmed = 1 WHERE id = :reservation_id");
+        $ur->bindParam(':start_date', $startDate);
+        $ur->bindParam(':end_date', $endDate);
+        $ur->bindParam(':num_guests', $numGuests);
+        $ur->bindParam(':total_price', $totalPrice);
+        $ur->bindParam(':reservation_id', $reservationId);
+        $ur->execute();
     }
 
     public function getUserReservations($userId) {
-        $stmt = $this->db->prepare("SELECT * FROM reservations WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $gur = $this->db->prepare("SELECT * FROM reservations WHERE user_id = :user_id");
+        $gur->bindParam(':user_id', $userId);
+        $gur->execute();
+        return $gur->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function getAllReservations() {
-        $stmt = $this->db->query("SELECT * FROM reservations");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $gar = $this->db->query("SELECT * FROM reservations");
+        return $gar->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function getBlockedDates() {
-        $stmt = $this->db->query("SELECT date FROM blocked_dates");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $gbd = $this->db->query("SELECT date FROM blocked_dates");
+        return $gbd->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function getReservedDates() {
-        $stmt = $this->db->query("SELECT start_date, end_date FROM reservations WHERE status != 'Cancelled'");
-        $reservations = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $grd = $this->db->query("SELECT start_date, end_date FROM reservations WHERE status != 'Cancelled'");
+        $reservations = $grd->fetchAll(\PDO::FETCH_ASSOC);
         $reservedDates = [];
         foreach ($reservations as $reservation) {
             $period = new \DatePeriod(

@@ -21,7 +21,7 @@ class HomeView {
             <!-- Calendrier de réservation -->
             <div class="calendar-block">
                 <h2>Réservez votre séjour</h2>
-                <form action="?action=reserve" method="post">
+                <form action="reservation" method="post">
                     <label for="start-date">Date de début :</label>
                     <input type="date" id="start-date" name="start-date" required>
                     

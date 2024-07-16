@@ -6,8 +6,8 @@ use Views\ForgotPasswordView;
 
 class ForgotPasswordController {
     public function forgotPasswordForm() {
-        $view = new ForgotPasswordView();
-        $view->showForm();
+        $forgotView = new ForgotPasswordView();
+        $forgotView->showForm();
     }
 
     public function sendResetLink() {
@@ -31,8 +31,8 @@ class ForgotPasswordController {
     }
 
     public function resetPasswordForm($token) {
-        $view = new ForgotPasswordView();
-        $view->showResetForm($token);
+        $resetView = new ForgotPasswordView();
+        $resetView->showResetForm($token);
     }
 
     public function resetPassword() {

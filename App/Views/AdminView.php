@@ -14,10 +14,15 @@ class AdminView {
                     <button id="next-month">&gt;</button>
                 </div>
                 <div class="calendar" id="calendar"></div>
-                <form id="block-form" method="post" action="?action=admin_block_dates">
+                <form id="add-block-form" method="post" action="?action=admin_add_blocked_dates">
                     <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
-                    <input type="hidden" name="blocked_dates" id="blocked-dates-input">
-                    <button type="submit">Block Selected Dates</button>
+                    <input type="hidden" name="blocked_dates" id="add-blocked-dates-input">
+                    <button type="submit">Add Selected Dates</button>
+                </form>
+                <form id="remove-block-form" method="post" action="?action=admin_remove_blocked_dates">
+                    <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
+                    <input type="hidden" name="blocked_dates" id="remove-blocked-dates-input">
+                    <button type="submit">Remove Selected Dates</button>
                 </form>
             </div>
             <h2>Reservations</h2>
@@ -34,12 +39,12 @@ class AdminView {
                 <tbody>';
                 foreach ($reservations as $reservation) {
                     echo '<tr>
-                        <td>' . $reservation['id'] . '</td>
-                        <td>' . $reservation['user_id'] . '</td>
-                        <td>' . $reservation['start_date'] . '</td>
-                        <td>' . $reservation['end_date'] . '</td>
+                        <td>' . htmlspecialchars($reservation['id']) . '</td>
+                        <td>' . htmlspecialchars($reservation['user_id']) . '</td>
+                        <td>' . htmlspecialchars($reservation['start_date']) . '</td>
+                        <td>' . htmlspecialchars($reservation['end_date']) . '</td>
                         <td>
-                            <form method="post" action="?action=admin_cancel_reservation&id=' . $reservation['id'] . '">
+                            <form method="post" action="?action=admin_cancel_reservation&id=' . htmlspecialchars($reservation['id']) . '">
                                 <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
                                 <button type="submit">Cancel</button>
                             </form>

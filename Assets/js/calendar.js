@@ -31,14 +31,16 @@ document.addEventListener('DOMContentLoaded', function() {
             table += '<td></td>';
         }
 
+        const today = new Date().toISOString().split('T')[0];
+
         for (let day = 1; day <= daysInMonth; day++) {
             const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const isPastDate = date < today;
             const isBlocked = blockedDates.includes(date);
             const isReserved = reservedDates.includes(date);
 
-            // Correction de la logique
-            let className = isReserved ? 'blocked' : isBlocked ? 'reserved' : 'available';
-            let badge = isReserved ? '<div class="blocked-badge">Bloqué</div>' : isBlocked ? '<div class="reservation-badge">Réservé</div>' : '';
+            let className = isPastDate ? 'disabled' : isReserved ? 'reserved' : isBlocked ? 'blocked' : 'available';
+            let badge = isReserved ? '<div class="reservation-badge">Réservé</div>' : isBlocked ? '<div class="blocked-badge">Bloqué</div>' : '';
 
             table += `<td class="${className}" data-date="${date}">${day}${badge}</td>`;
 
@@ -69,6 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     calculateTotalPrice(); // Calculer le prix total
                 } else if (!endDate && selectedDate > startDate) {
                     endDate = selectedDate;
+                    if (isSurroundedByBlockedOrReservedDates(startDate, endDate)) {
+                        alert("Vous ne pouvez pas sélectionner des dates entourant des dates bloquées ou réservées.");
+                        return;
+                    }
                     endDateInput.value = endDate;
                     document.querySelectorAll('.calendar td').forEach(cell => {
                         const cellDate = cell.getAttribute('data-date');
@@ -99,11 +105,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        document.querySelectorAll('.calendar td.blocked, .calendar td.reserved').forEach(cell => {
+        document.querySelectorAll('.calendar td.disabled').forEach(cell => {
             cell.addEventListener('click', function() {
-                alert("Cette date est déjà réservée ou bloquée.");
+                alert("Cette date est déjà passée.");
             });
         });
+    }
+
+    function isSurroundedByBlockedOrReservedDates(startDate, endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const prevDay = new Date(d);
+            prevDay.setDate(d.getDate() - 1);
+            const nextDay = new Date(d);
+            nextDay.setDate(d.getDate() + 1);
+
+            const prevDayStr = prevDay.toISOString().split('T')[0];
+            const nextDayStr = nextDay.toISOString().split('T')[0];
+
+            if (blockedDates.includes(prevDayStr) || blockedDates.includes(nextDayStr) || reservedDates.includes(prevDayStr) || reservedDates.includes(nextDayStr)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function calculateTotalPrice() {

@@ -12,8 +12,8 @@ class PaymentModel {
     }
 
     public function updateReservationStatus($reservationId, $status) {
-        $stmt = $this->db->prepare("UPDATE reservations SET status = :status WHERE id = :reservation_id");
-        $stmt->execute([
+        $ur = $this->db->prepare("UPDATE reservations SET status = :status WHERE id = :reservation_id");
+        $ur->execute([
             ':status' => $status,
             ':reservation_id' => $reservationId
         ]);

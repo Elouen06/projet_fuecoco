@@ -124,18 +124,13 @@ switch ($action) {
         }
         break;
     
-    case 'admin_block_dates':
+    case 'admin_add_blocked_dates':
         $adminController = new AdminController();
-        $adminController->blockDates();
+        $adminController->addBlockedDates();
         break;
 
-    case 'block_date':
+    case 'admin_remove_blocked_dates':
         $adminController = new AdminController();
-        $adminController->blockDate();
-        break;
-    
-    case 'unblock_date':
-        $adminController = new AdminController();
-        $adminController->unblockDate();
+        $adminController->removeBlockedDates();
         break;
 }

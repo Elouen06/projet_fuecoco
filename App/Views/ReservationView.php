@@ -12,7 +12,7 @@ class ReservationView {
 
         echo '<main>
             <h2>Récapitulatif de la réservation</h2>
-            <form action="index.php?action=confirm_reservation" method="post" id="reservation-form">
+            <form action="reservation/confirmation" method="post" id="reservation-form">
                 <label for="start-date">Date de début :</label>
                 <input type="date" id="start-date" name="start_date" value="' . htmlspecialchars($reservation['start_date']) . '">
                 <br>
@@ -44,19 +44,26 @@ class ReservationView {
     }
 
     public function renderUserReservations($reservations) {
-        echo '<h2>Mes Réservations</h2>';
-        echo '<table>';
-        echo '<tr><th>ID</th><th>Date de début</th><th>Date de fin</th><th>Nombre de voyageurs</th><th>Statut</th><th>Action</th></tr>';
-        foreach ($reservations as $reservation) {
-            echo '<tr>';
-            echo '<td>' . htmlspecialchars($reservation['id']) . '</td>';
-            echo '<td>' . htmlspecialchars($reservation['start_date']) . '</td>';
-            echo '<td>' . htmlspecialchars($reservation['end_date']) . '</td>';
-            echo '<td>' . htmlspecialchars($reservation['num_guests']) . '</td>';
-            echo '<td>' . htmlspecialchars($reservation['status']) . '</td>';
-            echo '<td><a href="?action=cancel_user_reservation&id=' . htmlspecialchars($reservation['id']) . '">Annuler</a></td>';
-            echo '</tr>';
-        }
-        echo '</table>';
+        echo '<h1>Mes Réservations</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>';
+                foreach ($reservations as $reservation) {
+                    echo '<tr>
+                        <td>' . $reservation['id'] . '</td>
+                        <td>' . $reservation['start_date'] . '</td>
+                        <td>' . $reservation['end_date'] . '</td>
+                        <td>' . ($reservation['confirmed'] ? 'Confirmed' : 'Pending') . '</td>
+                    </tr>';
+                }
+            echo '</tbody>
+        </table>';
     }
 }

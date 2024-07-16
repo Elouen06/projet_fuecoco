@@ -6,22 +6,22 @@ use Models\PaymentModel;
 
 class PaymentController {
     public function paymentChoice() {
-        $view = new PaymentView();
-        $view->render();
+        $paymentView = new PaymentView();
+        $paymentView->render();
     }
 
     public function processPayment() {
         // Vérifier le token CSRF
         if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
             $_SESSION['error_message'] = "Erreur de sécurité. Veuillez réessayer.";
-            header("Location: index.php?action=payment_choice");
+            header("Location: /projet_fuecoco/reservation/choix_du_paiment");
             exit;
         }
 
         // Vérifier si le bouton de paiement a été soumis
         if (!isset($_POST['submit_payment'])) {
             $_SESSION['error_message'] = "Action non autorisée.";
-            header("Location: index.php?action=payment_choice");
+            header("Location: /projet_fuecoco/reservation/choix_du_paiment");
             exit;
         }
 
@@ -41,11 +41,11 @@ class PaymentController {
             $paymentModel->updateReservationStatus($reservationId, $status);
 
             // Redirection vers une page de confirmation ou autre
-            header("Location: index.php?action=payment_success");
+            header("Location: /projet_fuecoco/accueil");
             exit;
         } else {
             $_SESSION['error_message'] = "Le paiement a échoué. Veuillez réessayer.";
-            header("Location: index.php?action=payment_choice");
+            header("Location: /projet_fuecoco/reservation/choix_du_paiment");
             exit;
         }
     }

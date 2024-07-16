@@ -23,13 +23,25 @@ class AdminController {
         $adminView->render('', $blockedDates, $reservedDates, $reservations);
     }
 
-    public function blockDates() {
+    public function addBlockedDates() {
         if (isset($_POST['csrf_token']) && validate_csrf_token($_POST['csrf_token'])) {
             if (isset($_POST['blocked_dates'])) {
                 $blockedDates = json_decode($_POST['blocked_dates'], true);
-                $this->adminModel->updateBlockedDates($blockedDates);
+                $this->adminModel->addBlockedDates($blockedDates);
             }
-            header('Location: ?action=admin');
+            header('Location: /projet_fuecoco/admin');
+        } else {
+            die("Invalid CSRF token.");
+        }
+    }
+
+    public function removeBlockedDates() {
+        if (isset($_POST['csrf_token']) && validate_csrf_token($_POST['csrf_token'])) {
+            if (isset($_POST['blocked_dates'])) {
+                $blockedDates = json_decode($_POST['blocked_dates'], true);
+                $this->adminModel->deleteUnblockedDates($blockedDates);
+            }
+            header('Location: /projet_fuecoco/admin');
         } else {
             die("Invalid CSRF token.");
         }
@@ -37,6 +49,6 @@ class AdminController {
 
     public function cancelReservation($reservationId) {
         $this->reservationModel->deleteReservation($reservationId);
-        header('Location: ?action=admin');
+        header('Location: /projet_fuecoco/admin');
     }
 }

@@ -15,7 +15,7 @@ class PaymentView {
         // Afficher le formulaire de choix de paiement
         echo '<main>
             <h2>Choix du paiement</h2>
-            <form action="index.php?action=process_payment" method="post" id="payment-choice-form">
+            <form action="reservation/processus_du_paiment" method="post" id="payment-choice-form">
                 <label for="payment-choice">Choisir un type de paiement :</label>
                 <select id="payment-choice" name="payment_choice">
                     <option value="one_time">Paiement en une seule fois</option>
