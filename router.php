@@ -8,6 +8,7 @@ use Controllers\ForgotPasswordController;
 use Controllers\ReservationController;
 use Controllers\PaymentController;
 use Controllers\AdminController;
+use Controllers\CommentsController;
 
 $action = $_GET['action'] ?? '';
 
@@ -18,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 switch ($action) {
-
     default:
         $controller = new HomeController();
         $controller->index();
@@ -133,4 +133,12 @@ switch ($action) {
         $adminController = new AdminController();
         $adminController->removeBlockedDates();
         break;
+
+    case 'add_comment':
+        $commentsController = new CommentsController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $commentsController->addComment();
+        }
+        break;
 }
+?>

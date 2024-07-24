@@ -2,8 +2,7 @@
 namespace Views;
 
 class HomeView {
-    public function render($calendar, $blockedDates, $reservedDates) {
-        // Générer le token CSRF
+    public function render($calendar, $blockedDates, $reservedDates, $comments) {
         $csrfToken = generate_csrf_token();
         echo '<main>
             <!-- Carousel -->
@@ -21,7 +20,7 @@ class HomeView {
             <!-- Calendrier de réservation -->
             <div class="calendar-block">
                 <h2>Réservez votre séjour</h2>
-                <form action="reservation" method="post">
+                <form action="?action=reserve" method="post">
                     <label for="start-date">Date de début :</label>
                     <input type="date" id="start-date" name="start-date" required>
                     
@@ -36,7 +35,7 @@ class HomeView {
 
                     <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
                     
-                    <button type="submit">Réserver</button>
+                    <button type="submit" id="reserve-button" >Réserver</button>
                 </form>
                 
                 <h2>Calendrier des réservations</h2>
@@ -54,6 +53,29 @@ class HomeView {
             <div id="map">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509282!2d144.96305791531645!3d-37.81362797975192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727e4f4e6b8ad!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1614213499570!5m2!1sen!2sau" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
+
+            <!-- Commentaires -->
+            <section id="comments">
+                <h2>Commentaires</h2>
+                <form method="post" action="index.php?action=add_comment">
+                    <label for="rating">Note :</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" required>
+                    
+                    <label for="comment">Commentaire :</label>
+                    <textarea id="comment" name="comment" required></textarea>
+
+                    <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
+
+                    <button type="submit">Ajouter un commentaire</button>
+                </form>
+                <h3>Commentaires des utilisateurs</h3>';
+                foreach ($comments as $comment) {
+                    echo '<div class="comment">
+                        <p><strong>' . htmlspecialchars($comment['username']) . ':</strong> ' . htmlspecialchars($comment['comment']) . '</p>
+                        <p>Note: ' . htmlspecialchars($comment['rating']) . '/5</p>
+                    </div>';
+                }
+                echo '</section>
         </main>
         <script>
             const blockedDates = ' . json_encode($blockedDates) . ';
@@ -62,3 +84,4 @@ class HomeView {
         <script src="Assets/js/calendar.js"></script>';
     }
 }
+?>
