@@ -29,8 +29,6 @@ class AdminView {
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>User ID</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Action</th>
@@ -39,8 +37,6 @@ class AdminView {
                 <tbody>';
                 foreach ($reservations as $reservation) {
                     echo '<tr>
-                        <td>' . htmlspecialchars($reservation['id']) . '</td>
-                        <td>' . htmlspecialchars($reservation['user_id']) . '</td>
                         <td>' . htmlspecialchars($reservation['start_date']) . '</td>
                         <td>' . htmlspecialchars($reservation['end_date']) . '</td>
                         <td>

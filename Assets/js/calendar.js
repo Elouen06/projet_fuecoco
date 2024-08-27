@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let prevMonthDay = daysInPrevMonth - (firstDayOfMonth - 2); // Calculate the starting day for the previous month
         for (let i = 1; i < firstDayOfMonth; i++) {
             const prevMonthDate = `${year}-${String(month).padStart(2, '0')}-${String(prevMonthDay).padStart(2, '0')}`;
-            table += `<td class="prev-month" data-date="${prevMonthDate}">${prevMonthDay}</td>`;
+            table += `<td class="prev-month available" data-date="${prevMonthDate}">${prevMonthDay}</td>`;
             prevMonthDay++;
         }
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let daysInNextMonth = 1;
         while ((daysInMonth + firstDayOfMonth - 1) % 7 !== 6) {
             const nextMonthDate = `${year}-${String(month + 2).padStart(2, '0')}-${String(daysInNextMonth).padStart(2, '0')}`;
-            table += `<td class="next-month" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
+            table += `<td class="next-month available" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
             daysInMonth++;
             daysInNextMonth++;
         }
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ensure the table has exactly 6 rows
         while ((daysInMonth + firstDayOfMonth - 1) < 42) {
             const nextMonthDate = `${year}-${String(month + 2).padStart(2, '0')}-${String(daysInNextMonth).padStart(2, '0')}`;
-            table += `<td class="next-month" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
+            table += `<td class="next-month available" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
             daysInMonth++;
             daysInNextMonth++;
             if ((daysInMonth + firstDayOfMonth - 1) % 7 === 0) {

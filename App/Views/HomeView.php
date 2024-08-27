@@ -5,10 +5,16 @@ class HomeView {
     public function render($calendar, $blockedDates, $reservedDates, $comments) {
         $csrfToken = generate_csrf_token();
         echo '<main>
-            <!-- Carousel -->
-            <div id="carousel" class="carousel">
-                <div class="carousel-item"><img src="Assets/images/logement1.jpg" alt="Logement 1"></div>
-                <div class="carousel-item"><img src="Assets/images/logement2.jpg" alt="Logement 2"></div>
+            <div id="blockimages" class="blockimages">
+                <div class="blockimages-main"><img src="Assets/images/imgtest1.jpeg" alt="Logement 1" id="mainImage"></div>
+                <div class="blockimages-thumbnails">
+                    <div class="blockimages-item"><img src="Assets/images/imgtest1.jpeg" alt="Logement 1" onclick="changeImage(this)"></div>
+                    <div class="blockimages-item"><img src="Assets/images/imgtest2.jpg" alt="Logement 2" onclick="changeImage(this)"></div>
+                    <div class="blockimages-item"><img src="Assets/images/imgtest3.png" alt="Logement 3" onclick="changeImage(this)"></div>
+                    <div class="blockimages-item"><img src="Assets/images/imgtest2.jpg" alt="Logement 4" onclick="changeImage(this)"></div>
+                    <div class="blockimages-item"><img src="Assets/images/imgtest1.jpeg" alt="Logement 5" onclick="changeImage(this)"></div>
+                    <div class="blockimages-item"><img src="Assets/images/imgtest3.png" alt="Logement 6" onclick="changeImage(this)"></div>
+                </div>
             </div>
 
             <!-- Description des logements -->
@@ -49,11 +55,6 @@ class HomeView {
                 </div>
             </div>
 
-            <!-- Map -->
-            <div id="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509282!2d144.96305791531645!3d-37.81362797975192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727e4f4e6b8ad!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1614213499570!5m2!1sen!2sau" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-
             <!-- Commentaires -->
             <section id="comments">
                 <h2>Commentaires</h2>
@@ -76,10 +77,22 @@ class HomeView {
                     </div>';
                 }
                 echo '</section>
+
+                <!-- Map -->
+            <div id="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509282!2d144.96305791531645!3d-37.81362797975192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727e4f4e6b8ad!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1614213499570!5m2!1sen!2sau" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            
         </main>
         <script>
             const blockedDates = ' . json_encode($blockedDates) . ';
             const reservedDates = ' . json_encode($reservedDates) . ';
+
+            function changeImage(element) {
+                var mainImage = document.getElementById("mainImage");
+                mainImage.src = element.src;
+                mainImage.alt = element.alt;
+            }
         </script>
         <script src="Assets/js/calendar.js"></script>';
     }

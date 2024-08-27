@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
         let daysInMonth = new Date(year, month + 1, 0).getDate();
         const firstDayOfMonth = new Date(year, month, 1).getDay() || 7;
+        const daysInPrevMonth = new Date(year, month, 0).getDate(); // Get the number of days in the previous month
 
         let table = '<table>';
         table += '<thead><tr>';
@@ -20,10 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
         table += '</tr></thead>';
         table += '<tbody><tr>';
 
+        // Add days from the previous month in gray
+        let prevMonthDay = daysInPrevMonth - (firstDayOfMonth - 2); // Calculate the starting day for the previous month
         for (let i = 1; i < firstDayOfMonth; i++) {
-            table += '<td></td>';
+            const prevMonthDate = `${year}-${String(month).padStart(2, '0')}-${String(prevMonthDay).padStart(2, '0')}`;
+            table += `<td class="prev-month available" data-date="${prevMonthDate}">${prevMonthDay}</td>`;
+            prevMonthDay++;
         }
 
+        // Add days of the current month
         for (let day = 1; day <= daysInMonth; day++) {
             const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const isBlocked = blockedDates.includes(date);
@@ -39,13 +45,38 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Add days from the next month in gray
+        let daysInNextMonth = 1;
         while ((daysInMonth + firstDayOfMonth - 1) % 7 !== 6) {
-            table += '<td></td>';
+            const nextMonthDate = `${year}-${String(month + 2).padStart(2, '0')}-${String(daysInNextMonth).padStart(2, '0')}`;
+            table += `<td class="next-month available" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
             daysInMonth++;
+            daysInNextMonth++;
+        }
+
+        // Ensure the table has exactly 6 rows
+        while ((daysInMonth + firstDayOfMonth - 1) < 42) {
+            const nextMonthDate = `${year}-${String(month + 2).padStart(2, '0')}-${String(daysInNextMonth).padStart(2, '0')}`;
+            table += `<td class="next-month available" data-date="${nextMonthDate}">${daysInNextMonth}</td>`;
+            daysInMonth++;
+            daysInNextMonth++;
+            if ((daysInMonth + firstDayOfMonth - 1) % 7 === 0) {
+                table += '</tr><tr>';
+            }
         }
 
         table += '</tr></tbody></table>';
         calendar.innerHTML = table;
+
+        // Set style for next month and previous month dates
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .prev-month,
+            .next-month {
+                color: gray;
+            }
+        `;
+        document.head.appendChild(style);
 
         document.querySelectorAll('.calendar td.available, .calendar td.blocked').forEach(cell => {
             cell.addEventListener('click', function() {

@@ -24,7 +24,7 @@ class LoginController {
                     $_SESSION['user'] = $email;
                     $_SESSION['id_level'] = $model->getUserLevel($email);
                     echo "Login successful!";
-                    header("Location: /accueil");
+                    header("Location: ./accueil");
                     exit();
                 } else {
                     // Connexion échouée
@@ -42,7 +42,7 @@ class LoginController {
         if (isset($_POST['csrf_token']) && validate_csrf_token($_POST['csrf_token'])) {
             session_unset();
             session_destroy();
-            header("Location: /accueil");
+            header("Location: ./accueil");
             exit();
         } else {
             echo "Invalid CSRF token.";

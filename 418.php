@@ -42,8 +42,7 @@
             <h1>418. I'm a teapot.</h1>
             <p>The requested entity body is short and stout.</p>
             <p>Tip me over and pour me out.</p>
-            <p>Charles hat eine kleine Taube</p>
-        </div>
+         </div>
         <img src="Assets/images/teapot.png" alt="Teapot" class="teapot">
     </div>
 </body>
