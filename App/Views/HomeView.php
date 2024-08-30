@@ -9,58 +9,70 @@ class HomeView {
                 <div class="blockimages-main"><img src="Assets/images/imgtest1.jpeg" alt="Logement 1" id="mainImage"></div>
                 <div class="blockimages-thumbnails">
                     <div class="blockimages-item"><img src="Assets/images/imgtest1.jpeg" alt="Logement 1" onclick="changeImage(this)"></div>
-                    <div class="blockimages-item"><img src="Assets/images/imgtest2.jpg" alt="Logement 2" onclick="changeImage(this)"></div>
                     <div class="blockimages-item"><img src="Assets/images/imgtest3.png" alt="Logement 3" onclick="changeImage(this)"></div>
-                    <div class="blockimages-item"><img src="Assets/images/imgtest2.jpg" alt="Logement 4" onclick="changeImage(this)"></div>
                     <div class="blockimages-item"><img src="Assets/images/imgtest1.jpeg" alt="Logement 5" onclick="changeImage(this)"></div>
                     <div class="blockimages-item"><img src="Assets/images/imgtest3.png" alt="Logement 6" onclick="changeImage(this)"></div>
                 </div>
             </div>
 
-            <!-- Description des logements -->
-            <section id="description">
-                <h2>Insérer Titre Description</h2>
-                <p>Insérer Description</p>
+            <section class="main-content">
+                <div id="description" class="description-section">
+                    <h2>Insérer Titre Description</h2>
+                    <p>Insérer Description</p>
+                </div>
+
+                <div class="reservation-section">
+                    <!-- Formulaire de réservation -->
+                    <div class="calendar-block">
+                        <h2>Réservez votre séjour</h2>
+                        <form action="?action=reserve" method="post">
+                            <label for="start-date">Date de début :</label>
+                            <input type="date" id="start-date" name="start-date" required>
+                            
+                            <label for="end-date">Date de fin :</label>
+                            <input type="date" id="end-date" name="end-date" required>
+                            
+                            <label for="num-guests">Nombre de voyageurs :</label>
+                            <input type="number" id="num-guests" name="num-guests" value="1" min="1" max="4" required>
+                            
+                            <label for="total-price">Prix total :</label>
+                            <input type="text" id="total-price" name="total-price" readonly required>
+
+                            <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
+                            
+                            <button type="submit" id="reserve-button">Réserver</button>
+                        </form>
+                    </div>
+
+                    <!-- Calendrier de réservation -->
+                    <div class="calendar-block">
+                        <div class="calendar-navigation">
+                            <button id="prev-month">&lt;</button>
+                            <span id="current-month"></span>
+                            <button id="next-month">&gt;</button>
+                        </div>
+                        <div class="calendar" id="calendar">
+                            ' . $calendar . '
+                        </div>
+                    </div>
+                </div>
             </section>
-
-            <!-- Calendrier de réservation -->
-            <div class="calendar-block">
-                <h2>Réservez votre séjour</h2>
-                <form action="?action=reserve" method="post">
-                    <label for="start-date">Date de début :</label>
-                    <input type="date" id="start-date" name="start-date" required>
-                    
-                    <label for="end-date">Date de fin :</label>
-                    <input type="date" id="end-date" name="end-date" required>
-                    
-                    <label for="num-guests">Nombre de voyageurs :</label>
-                    <input type="number" id="num-guests" name="num-guests" value="1" min="1" max="4" required>
-                    
-                    <label for="total-price">Prix total :</label>
-                    <input type="text" id="total-price" name="total-price" readonly required>
-
-                    <input type="hidden" name="csrf_token" value="' . htmlspecialchars($csrfToken) . '">
-                    
-                    <button type="submit" id="reserve-button" >Réserver</button>
-                </form>
-                
-                <h2>Calendrier des réservations</h2>
-                <div class="calendar-navigation">
-                    <button id="prev-month">&lt;</button>
-                    <span id="current-month"></span>
-                    <button id="next-month">&gt;</button>
-                </div>
-                <div class="calendar" id="calendar">
-                    ' . $calendar . '
-                </div>
-            </div>
 
             <!-- Commentaires -->
             <section id="comments">
                 <h2>Commentaires</h2>
                 <form method="post" action="index.php?action=add_comment">
-                    <label for="rating">Note :</label>
-                    <input type="number" id="rating" name="rating" min="1" max="5" required>
+                    <div class="comment-rating">
+                        <label for="rating">Note :</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required>
+                        <div class="stars">
+                            <i class="star">&#9733;</i>
+                            <i class="star">&#9733;</i>
+                            <i class="star">&#9733;</i>
+                            <i class="star">&#9733;</i>
+                            <i class="star">&#9733;</i>
+                        </div>
+                    </div>
                     
                     <label for="comment">Commentaire :</label>
                     <textarea id="comment" name="comment" required></textarea>
